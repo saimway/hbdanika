@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#171021">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>For Anika · Happy Birthday</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=20261002_2007">
+</head>
+<body>
+<canvas id="particleCanvas"></canvas>
+<div id="heartFlyContainer"></div>
+
+<div class="floating-audio-widget" id="audioWidget" title="Toggle the music box">
+  <div class="music-disc" id="musicDisc">
+    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3" fill="#fff"/><circle cx="18" cy="16" r="3" fill="#fff"/>
+    </svg>
+  </div>
+  <span class="music-label" id="musicLabel">Music: Off</span>
+</div>
+
+<button type="button" class="floating-mail-btn" id="floatingMailBtn" title="Reopen the letter">
+  <svg viewBox="0 0 24 24" width="17" height="17" fill="none">
+    <rect x="2" y="5" width="20" height="14" rx="2.5" fill="#fffaf2" stroke="#b5383a" stroke-width="1.6"/>
+    <path d="M2 7l10 6.5L22 7" stroke="#b5383a" stroke-width="1.6" stroke-linecap="round"/>
+    <circle cx="12" cy="13" r="2.2" fill="#b5383a"/>
+  </svg>
+  <span>the letter</span>
+</button>
+
+<!-- ══════════ 1. LOCK SCREEN ══════════ -->
+<section class="lock-screen" id="lockScreen">
+  <div class="lock-header">
+    <div class="lock-icon-glow">
+      <svg class="lock-svg" viewBox="0 0 24 24">
+        <path id="lockShackle" d="M7 10V7a5 5 0 0 1 10 0v3" fill="none" stroke="#e8c476" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M4 10h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2z" fill="#e8c476"/>
+        <circle cx="12" cy="15" r="1.5" fill="#361d3c"/>
+        <path d="M12 16.5v2.5" stroke="#361d3c" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <h1 class="lock-title">For Anika,<br>and only Anika</h1>
+    <p class="lock-subtitle">there's a little world in here made only for you. enter your birthdate to open it.</p>
+  </div>
+
+  <div id="dateDisplayContainer">
+    <div class="birthdate-indicator" id="birthdateIndicator">
+      <svg class="indicator-icon" viewBox="0 0 20 20" width="14" height="14" fill="none">
+        <path d="M5 3v3M15 3v3M3 8h14M4 4h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" stroke="#e8c476" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      <span class="indicator-text">Enter your birthdate</span>
+      <span class="indicator-badge">xx/xx/2008</span>
+    </div>
+    <div class="date-display-container">
+      <div class="date-group"><div class="pin-slot"></div><div class="pin-slot"></div></div>
+      <div class="date-divider">·</div>
+      <div class="date-group"><div class="pin-slot"></div><div class="pin-slot"></div></div>
+      <div class="date-divider">·</div>
+      <div class="date-group"><div class="pin-slot"></div><div class="pin-slot"></div><div class="pin-slot"></div><div class="pin-slot"></div></div>
+    </div>
+    <div class="hint-pill">
+      <svg viewBox="0 0 16 16" width="11" height="11"><path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5Z" fill="#e8c476"/></svg>
+      <span>hint: xx/xx/2008</span>
+      <svg viewBox="0 0 16 16" width="11" height="11"><path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5Z" fill="#e8c476"/></svg>
+    </div>
+    <p class="lock-status" id="lockStatus" aria-live="polite"></p>
+  </div>
+
+  <div class="keypad-grid">
+    <button type="button" class="keypad-btn" data-value="1">1</button>
+    <button type="button" class="keypad-btn" data-value="2">2<span class="keypad-subtext">ABC</span></button>
+    <button type="button" class="keypad-btn" data-value="3">3<span class="keypad-subtext">DEF</span></button>
+    <button type="button" class="keypad-btn" data-value="4">4<span class="keypad-subtext">GHI</span></button>
+    <button type="button" class="keypad-btn" data-value="5">5<span class="keypad-subtext">JKL</span></button>
+    <button type="button" class="keypad-btn" data-value="6">6<span class="keypad-subtext">MNO</span></button>
+    <button type="button" class="keypad-btn" data-value="7">7<span class="keypad-subtext">PQRS</span></button>
+    <button type="button" class="keypad-btn" data-value="8">8<span class="keypad-subtext">TUV</span></button>
+    <button type="button" class="keypad-btn" data-value="9">9<span class="keypad-subtext">WXYZ</span></button>
+    <button type="button" class="keypad-btn action-btn" data-value="clear">C</button>
+    <button type="button" class="keypad-btn" data-value="0">0</button>
+    <button type="button" class="keypad-btn action-btn" data-value="backspace" aria-label="Backspace">
+      <svg class="keypad-backspace-svg" viewBox="0 0 24 24" width="21" height="21" fill="currentColor">
+        <path d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-3 12.59L17.59 17 14 13.41 10.41 17 9 15.59 12.59 12 9 8.41 10.41 7 14 10.59 17.59 7 19 8.41 15.41 12 19 15.59z"/>
+      </svg>
+    </button>
+  </div>
+</section>
+
+<!-- ══════════ MAIN EXPERIENCE ══════════ -->
+<main class="app-container main-experience" id="mainExperience" inert aria-hidden="true">
+
+  <!-- ── 2. THE FIRST LETTER ── -->
+  <section class="mail-stage" id="mailStage">
+    <div class="hero-section">
+      <div class="floating-badge">
+        <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+        <span>special delivery · for your eyes only</span>
+        <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+      </div>
+      <h1 class="hero-title">Happy Birthday, Anika</h1>
+      <p class="hero-subtitle">i made you something. nothing fancy, just the truth, in words i hope you can really feel.</p>
+    </div>
+
+    <div class="envelope-container" id="envelopeWrapper">
+      <div class="envelope" id="firstEnvelope">
+        <div class="airmail-stripes-border"></div>
+        <div class="envelope-inner-lining"></div>
+        <div class="letter-peeking" id="letterPeeking">
+          <div class="letter-seal-ribbon"></div>
+          <div class="letter-preview-text">Dearest Anika…</div>
+        </div>
+        <div class="envelope-front"></div>
+        <div class="stamp-wrapper">
+          <div class="vintage-stamp">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#ff758f"/>
+            </svg>
+            <div class="stamp-text">FOR<br>ANIKA</div>
+          </div>
+          <div class="postmark-circle"><span>04.10</span><span>2026</span></div>
+        </div>
+        <div class="envelope-address">
+          <span class="address-tag">handcrafted · with everything · from me, to you</span>
+          <div class="address-name">To: Anika
+            <svg class="name-star-svg" viewBox="0 0 16 16" width="13" height="13"><path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5Z" fill="#d4af37"/></svg>
+          </div>
+        </div>
+        <div class="envelope-flap">
+          <svg class="flap-svg" viewBox="0 0 360 140" preserveAspectRatio="none">
+            <polygon points="0,0 360,0 180,140" fill="#f4ecd8" stroke="#dec7a8" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="wax-seal" id="waxSeal" title="Break the seal">
+          <div class="wax-flange wax-f1"></div><div class="wax-flange wax-f2"></div>
+          <div class="wax-flange wax-f3"></div><div class="wax-flange wax-f4"></div>
+          <div class="wax-monogram">
+            <span class="wax-letter">A</span>
+            <span class="wax-wreath">
+              <svg viewBox="0 0 12 12" width="7" height="7" fill="currentColor"><path d="M6 0L7.2 4.8L12 6L7.2 7.2L6 12L4.8 7.2L0 6L4.8 4.8Z"/></svg>
+              2026
+              <svg viewBox="0 0 12 12" width="7" height="7" fill="currentColor"><path d="M6 0L7.2 4.8L12 6L7.2 7.2L6 12L4.8 7.2L0 6L4.8 4.8Z"/></svg>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="mail-tap-prompt" id="mailTapPrompt">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none">
+          <circle cx="12" cy="12" r="9" fill="#b5383a"/><circle cx="12" cy="12" r="7" stroke="#e8c476" stroke-width="1"/>
+          <text x="12" y="15" text-anchor="middle" font-size="9" fill="#e8c476" font-family="serif" font-weight="bold">A</text>
+        </svg>
+        <span>tap the wax seal, it's been waiting for you</span>
+      </div>
+    </div>
+
+    <article class="letter-content-box" id="firstLetter">
+      <div class="deckle-edge deckle-top"></div>
+      <div class="stationery-red-margin"></div>
+      <div class="pressed-flower-stamp">
+        <svg viewBox="0 0 36 36" width="34" height="34" fill="none">
+          <ellipse cx="18" cy="8.5" rx="4.5" ry="7" fill="#ffb3c1" opacity="0.9"/>
+          <ellipse cx="18" cy="8.5" rx="4.5" ry="7" fill="#ff9ebb" opacity="0.85" transform="rotate(72 18 18)"/>
+          <ellipse cx="18" cy="8.5" rx="4.5" ry="7" fill="#ffb3c1" opacity="0.9" transform="rotate(144 18 18)"/>
+          <ellipse cx="18" cy="8.5" rx="4.5" ry="7" fill="#ff9ebb" opacity="0.85" transform="rotate(216 18 18)"/>
+          <ellipse cx="18" cy="8.5" rx="4.5" ry="7" fill="#ffb3c1" opacity="0.9" transform="rotate(288 18 18)"/>
+          <circle cx="18" cy="18" r="4" fill="#e8c476"/><circle cx="18" cy="18" r="2.2" fill="#c9184a"/>
+        </svg>
+      </div>
+      <div class="parchment-stamp">for your birthday</div>
+      <div class="letter-header">
+        <div class="letter-salutation">Dearest Anika,</div>
+        <div class="letter-date">October 4th · the day the world got a little brighter</div>
+      </div>
+      <div class="letter-body">
+        <p>Anika, finally. It's the day I've been thinking about since the moment you told me your birthday. And now the day is here.</p>
+        <p>You know what? This is the day the world got a little brighter. Finding someone like you felt like a fantasy to me, something I never thought was real. Until I met you.</p>
+        <p>We're miles apart. I've never stood next to you, never heard your laugh in the same room. But somehow you're the one who feels closest to me. You're the first person I want to tell things to. Your messages can turn my whole day around.</p>
+        <p>I know when I say nice things about you, you think I'm just being kind. I'm not, Anika. Not once. Everything I say about you is true, and I'll keep saying it until you believe it.</p>
+        <p>So before you blow out the candles, I made this for you. Take your time with it. Every word is real.</p>
+      </div>
+      <div class="letter-signoff">
+        Always here for you,<br>
+        <span class="signoff-signature">Saim</span>
+      </div>
+      <div class="deckle-edge deckle-bottom"></div>
+    </article>
+  </section>
+
+  <div class="section-ornament reveal">
+    <svg width="130" height="14" viewBox="0 0 130 14" fill="none">
+      <path d="M4 7h44M82 7h44" stroke="#e8c476" stroke-width="1" opacity="0.55"/>
+      <path d="M65 1l1.9 4.1L71 7l-4.1 1.9L65 13l-1.9-4.1L59 7l4.1-1.9z" fill="#e8c476"/>
+    </svg>
+  </div>
+
+  <!-- ── 3. THE ARCHIVE OF US ── -->
+  <section class="notes-section">
+    <div class="section-title-wrap reveal">
+      <div class="scrapbook-badge">the archive of us</div>
+      <h2 class="section-title">Pages I wrote<br>with you in mind</h2>
+      <p class="section-subtitle">the little things i see in you, even from far away</p>
+    </div>
+
+    <div class="notes-stack">
+      <div class="scrapbook-item polaroid-card polaroid-tilt-left reveal" id="polaroid1">
+        <div class="washi-tape tape-pattern-cherry"></div>
+        <div class="polaroid-photo">
+          <div class="camera-flash-overlay"></div>
+          <div class="polaroid-illustration">
+            <div class="vector-scene-constellation">
+              <svg viewBox="0 0 48 48" width="48" height="48" fill="none">
+                <circle cx="16" cy="18" r="4.5" fill="#e8c476"/>
+                <circle cx="32" cy="30" r="5.5" fill="#ff758f"/>
+                <line x1="16" y1="18" x2="32" y2="30" stroke="#e8c476" stroke-width="1.8" stroke-dasharray="3 2"/>
+                <circle cx="16" cy="18" r="8" stroke="rgba(232,196,118,0.4)" stroke-width="1"/>
+                <circle cx="32" cy="30" r="9.5" stroke="rgba(255,117,143,0.4)" stroke-width="1"/>
+                <polygon points="24,10 25.5,14 29.5,15.5 25.5,17 24,21 22.5,17 18.5,15.5 22.5,14" fill="#fff" opacity="0.9"/>
+                <polygon points="38,18 39,21 42,22 39,23 38,26 37,23 34,22 37,21" fill="#ffe494" opacity="0.8"/>
+              </svg>
+            </div>
+            <div class="vector-scene-cassette">
+              <svg viewBox="0 0 54 36" width="52" height="34" fill="none">
+                <rect x="2" y="2" width="50" height="32" rx="4" fill="#2b172a" stroke="#e8c476" stroke-width="1.5"/>
+                <rect x="7" y="6" width="40" height="20" rx="3" fill="#fdfaf3"/>
+                <rect x="11" y="9" width="32" height="14" rx="2" fill="#3c244d"/>
+                <circle cx="19" cy="16" r="4.5" fill="#fff" stroke="#ff758f" stroke-width="1.2"/>
+                <circle cx="35" cy="16" r="4.5" fill="#fff" stroke="#ff758f" stroke-width="1.2"/>
+                <circle cx="19" cy="16" r="2" fill="#2b172a"/>
+                <circle cx="35" cy="16" r="2" fill="#2b172a"/>
+                <path d="M19 19h16" stroke="#e8c476" stroke-width="1"/>
+              </svg>
+            </div>
+            <div class="vector-scene-sparkle">
+              <svg viewBox="0 0 36 36" width="34" height="34" fill="none">
+                <polygon points="18,2 21.5,14.5 34,18 21.5,21.5 18,34 14.5,21.5 2,18 14.5,14.5" fill="#e8c476"/>
+                <circle cx="18" cy="18" r="3.5" fill="#fff"/>
+              </svg>
+            </div>
+          </div>
+          <div class="polaroid-glow"></div>
+        </div>
+        <div class="polaroid-tag">#closestToMe</div>
+        <div class="polaroid-caption">"We're miles apart, but talking to you never feels far. It feels like you're right next to me. I don't know how a screen can do that, but you make it happen every single time."</div>
+      </div>
+
+      <div class="scrapbook-item note-card note-pink reveal">
+        <div class="gold-paperclip">
+          <svg viewBox="0 0 20 48"><path d="M6 14 v22 a5 5 0 0 0 10 0 V10 a7 7 0 0 0 -14 0 v26 a9 9 0 0 0 18 0 V16" fill="none" stroke="#d4af37" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="washi-tape tape-pattern-gold"></div>
+        <div class="note-card-header">
+          <span class="note-sticker">
+            <svg viewBox="0 0 28 28" width="26" height="26" fill="none">
+              <circle cx="14" cy="14" r="13" fill="#fff" stroke="#ffcad4" stroke-width="1.5"/>
+              <ellipse cx="14" cy="6.5" rx="3.5" ry="5.5" fill="#ff758f" opacity="0.85"/>
+              <ellipse cx="14" cy="6.5" rx="3.5" ry="5.5" fill="#ff758f" opacity="0.85" transform="rotate(72 14 14)"/>
+              <ellipse cx="14" cy="6.5" rx="3.5" ry="5.5" fill="#ff758f" opacity="0.85" transform="rotate(144 14 14)"/>
+              <ellipse cx="14" cy="6.5" rx="3.5" ry="5.5" fill="#ff758f" opacity="0.85" transform="rotate(216 14 14)"/>
+              <ellipse cx="14" cy="6.5" rx="3.5" ry="5.5" fill="#ff758f" opacity="0.85" transform="rotate(288 14 14)"/>
+              <circle cx="14" cy="14" r="3.2" fill="#e8c476"/>
+            </svg>
+          </span>
+          <h3 class="note-card-title">Things about you I always remember</h3>
+        </div>
+        <p class="appreciation-hint">(tap the ones you already know are true)</p>
+        <ul class="note-list appreciation-list">
+          <li class="appreciation-item">
+            <span class="appreciation-check"><svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor"><path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5Z"/></svg></span>
+            <span class="appreciation-icon"><svg viewBox="0 0 20 20" width="17" height="17" fill="none"><circle cx="10" cy="10" r="8" fill="#e8c476"/><path d="M6 11c1 2.5 7 2.5 8 0" stroke="#3d2b27" stroke-width="1.5" stroke-linecap="round"/><circle cx="7" cy="8" r="1.2" fill="#3d2b27"/><circle cx="13" cy="8" r="1.2" fill="#3d2b27"/></svg></span>
+            <span class="appreciation-text"><strong>Your smile.</strong> I saw that in one of your highlights, and I can say it's one of the prettiest things that I have ever seen. Keep smiling, and everything around you will light up.</span>
+          </li>
+          <li class="appreciation-item">
+            <span class="appreciation-check"><svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor"><path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5Z"/></svg></span>
+            <span class="appreciation-icon"><svg viewBox="0 0 20 20" width="17" height="17" fill="none"><path d="M3 11a7 7 0 0 1 14 0" stroke="#ff758f" stroke-width="1.8" stroke-linecap="round"/><rect x="2" y="10" width="3" height="6" rx="1.5" fill="#ff758f"/><rect x="15" y="10" width="3" height="6" rx="1.5" fill="#ff758f"/></svg></span>
+            <span class="appreciation-text"><strong>How you care.</strong> You notice when someone is down. You ask, and you really listen. That kind of kindness is rare, Anika.</span>
+          </li>
+          <li class="appreciation-item">
+            <span class="appreciation-check"><svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor"><path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5Z"/></svg></span>
+            <span class="appreciation-icon"><svg viewBox="0 0 20 20" width="17" height="17" fill="none"><path d="M10 17.5l-1.2-1.1C4.5 12.6 1.7 10 1.7 6.9 1.7 4.4 3.6 2.5 6.1 2.5c1.4 0 2.8.7 3.9 1.7 1.1-1 2.5-1.7 3.9-1.7 2.5 0 4.4 1.9 4.4 4.4 0 3.1-2.8 5.7-7.1 9.5L10 17.5z" fill="#ffcad4" stroke="#ff758f" stroke-width="1.2"/></svg></span>
+            <span class="appreciation-text"><strong>You, when you're excited.</strong> When you talk about something you love, your whole face lights up. I could listen to you for hours.</span>
+          </li>
+          <li class="appreciation-item">
+            <span class="appreciation-check"><svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor"><path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5Z"/></svg></span>
+            <span class="appreciation-icon"><svg viewBox="0 0 20 20" width="17" height="17" fill="none"><polygon points="10,1 12.5,7 19,7.5 14,12 15.5,18.5 10,15 4.5,18.5 6,12 1,7.5 7.5,7" fill="#e8c476"/></svg></span>
+            <span class="appreciation-text"><strong>The part you don't see.</strong> The beauty you see in others is a reflection of the beauty you have in you. And when I say you're beautiful, I don't mean only the physical aspect of you. It's the mind, it's the way you think, it's beautiful. I said it again.</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="scrapbook-item polaroid-card polaroid-tilt-right reveal" id="polaroid2">
+        <div class="washi-tape tape-pattern-plaid"></div>
+        <div class="polaroid-photo polaroid-night">
+          <div class="camera-flash-overlay"></div>
+          <div class="night-stars-decor"></div>
+          <div class="polaroid-illustration">
+            <div class="vector-scene-moon">
+              <svg viewBox="0 0 36 36" width="34" height="34" fill="none">
+                <path d="M28 17a12 12 0 1 1-13-13 10 10 0 0 0 13 13z" fill="#e8c476"/>
+                <circle cx="16" cy="18" r="1.5" fill="#e09f3e" opacity="0.6"/><circle cx="21" cy="22" r="1" fill="#e09f3e" opacity="0.6"/>
+              </svg>
+            </div>
+            <div class="vector-scene-mug">
+              <svg viewBox="0 0 36 36" width="34" height="34" fill="none">
+                <rect x="7" y="14" width="18" height="16" rx="3" fill="#dec7a8" stroke="#3d2b27" stroke-width="1.2"/>
+                <path d="M25 17h3a3 3 0 0 1 3 3v2a3 3 0 0 1-3 3h-3" stroke="#3d2b27" stroke-width="1.5"/>
+                <path d="M12 11c0-2 2-3 2-5M16 11c0-2 2-3 2-5M20 11c0-2 2-3 2-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" opacity="0.8"/>
+              </svg>
+            </div>
+            <div class="vector-scene-clock">
+              <svg viewBox="0 0 36 36" width="34" height="34" fill="none">
+                <circle cx="18" cy="18" r="14" fill="#2b172a" stroke="#e8c476" stroke-width="1.8"/>
+                <circle cx="18" cy="18" r="1.8" fill="#e8c476"/>
+                <line x1="18" y1="18" x2="24" y2="12" stroke="#ff758f" stroke-width="2" stroke-linecap="round"/>
+                <line x1="18" y1="18" x2="18" y2="7" stroke="#e8c476" stroke-width="1.6" stroke-linecap="round"/>
+                <circle cx="18" cy="6" r="0.8" fill="#e8c476"/>
+                <circle cx="30" cy="18" r="0.8" fill="#e8c476"/>
+                <circle cx="18" cy="30" r="0.8" fill="#e8c476"/>
+                <circle cx="6" cy="18" r="0.8" fill="#e8c476"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div class="polaroid-tag">#yourMessages</div>
+        <div class="polaroid-caption">"Your name lighting up my screen is my favorite notification. Whatever kind of day I'm having, it gets better the second I see it."</div>
+      </div>
+
+      <div class="scrapbook-item fold-note-card reveal" id="foldNoteCard">
+        <div class="washi-tape tape-pattern-floral"></div>
+        <div class="fold-note-header">
+          <span class="note-sticker">
+            <svg viewBox="0 0 28 28" width="26" height="26" fill="none">
+              <circle cx="14" cy="14" r="13" fill="#fff" stroke="#dec7a8" stroke-width="1.5"/>
+              <rect x="6" y="8" width="16" height="12" rx="2" fill="#fdf5ea" stroke="#b5838d" stroke-width="1.2"/>
+              <path d="M6 10l8 5 8-5" stroke="#b5838d" stroke-width="1.2" stroke-linecap="round"/>
+              <circle cx="14" cy="14" r="1.8" fill="#c9184a"/>
+            </svg>
+          </span>
+          <h3 class="note-card-title">Little things that always remind me of you</h3>
+        </div>
+        <div class="fold-ribbon"><span>Secret · tap to unfold</span></div>
+        <div class="fold-note-teaser">
+          <svg class="teaser-key-svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <circle cx="8" cy="12" r="5"/><line x1="13" y1="12" x2="22" y2="12"/><line x1="18" y1="12" x2="18" y2="16"/><line x1="21" y1="12" x2="21" y2="15"/>
+          </svg>
+          <span>tap to unfold what makes me think of you…</span>
+        </div>
+        <div class="fold-note-content">
+          <p><strong>Small moments when you cross my mind:</strong></p>
+          <ul class="remind-list">
+            <li>✦ Whenever I hear about painting and sketching; you are always the first person that comes to mind.</li>
+            <li>✦ Looking up at the moon late at night and wondering if you are watching it too.</li>
+            <li>✦ Finding something random or funny during the day and my first instinct is saving it to share with you.</li>
+            <li>✦ Catching myself smiling at my screen in the middle of a busy day, just from reading a text you sent.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="scrapbook-item note-card note-mint mason-jar-card reveal">
+        <div class="washi-tape tape-pattern-mint"></div>
+        <div class="mason-jar-lid"></div>
+        <div class="note-card-header">
+          <span class="note-sticker">
+            <svg viewBox="0 0 28 28" width="26" height="26" fill="none">
+              <circle cx="14" cy="14" r="13" fill="#fff" stroke="#dec7a8" stroke-width="1.5"/>
+              <polygon points="14,4 16.5,10.5 23.5,11.5 18,16 19.5,23 14,19 8.5,23 10,16 4.5,11.5 11.5,10.5" fill="#e8c476"/>
+            </svg>
+          </span>
+          <h3 class="note-card-title">A jar of wishes · tap one</h3>
+        </div>
+        <div class="note-card-body">six wishes i keep for you. tap a star and i'll tell you one.</div>
+        <div class="star-wishes-grid">
+          <button type="button" class="wish-star-btn"><svg class="star-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9"/></svg><span>Joy</span></button>
+          <button type="button" class="wish-star-btn"><svg class="star-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9"/></svg><span>Dreams</span></button>
+          <button type="button" class="wish-star-btn"><svg class="star-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9"/></svg><span>Peace</span></button>
+          <button type="button" class="wish-star-btn"><svg class="star-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9"/></svg><span>Magic</span></button>
+          <button type="button" class="wish-star-btn"><svg class="star-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9"/></svg><span>Clarity</span></button>
+          <button type="button" class="wish-star-btn"><svg class="star-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9"/></svg><span>Home</span></button>
+        </div>
+        <div class="wish-revealed-text" id="wishRevealedText"><span>your wish is hiding in one of those stars…</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-ornament reveal">
+    <svg width="130" height="14" viewBox="0 0 130 14" fill="none">
+      <path d="M4 7h44M82 7h44" stroke="#e8c476" stroke-width="1" opacity="0.55"/>
+      <path d="M65 1l1.9 4.1L71 7l-4.1 1.9L65 13l-1.9-4.1L59 7l4.1-1.9z" fill="#e8c476"/>
+    </svg>
+  </div>
+
+  <!-- ── 4. THE CAKE ── -->
+  <section class="cake-section reveal" id="cakeSection">
+    <div class="cake-badge">
+      <svg viewBox="0 0 16 16" width="11" height="11"><path d="M8 1C6 4 4 6.5 4 9.5a4 4 0 0 0 8 0c0-3-2-5.5-4-8.5z" fill="#e8c476"/></svg>
+      <span>make it count · candles in the dark</span>
+      <svg viewBox="0 0 16 16" width="11" height="11"><path d="M8 1C6 4 4 6.5 4 9.5a4 4 0 0 0 8 0c0-3-2-5.5-4-8.5z" fill="#e8c476"/></svg>
+    </div>
+    <h2 class="cake-title">Make a Wish, Anika</h2>
+    <p class="cake-subtitle">close your eyes and wish for something big. i'll be wishing it with you, from far away.</p>
+
+    <div class="cake-stage" id="cakeStage">
+      <div class="cake-ambient-glow"></div>
+      <div class="candles-row">
+        <div class="candle" title="tap to blow"><div class="candle-wick"></div><div class="candle-flame"></div></div>
+        <div class="candle" title="tap to blow"><div class="candle-wick"></div><div class="candle-flame"></div></div>
+        <div class="candle candle-tall" title="tap to blow"><div class="candle-wick"></div><div class="candle-flame"></div></div>
+        <div class="candle" title="tap to blow"><div class="candle-wick"></div><div class="candle-flame"></div></div>
+        <div class="candle" title="tap to blow"><div class="candle-wick"></div><div class="candle-flame"></div></div>
+      </div>
+      <div class="cake-tier-top">
+        <div class="whipped-cream-row"><div class="cream-rosette"></div><div class="cream-rosette"></div><div class="cream-rosette"></div><div class="cream-rosette"></div><div class="cream-rosette"></div></div>
+        <div class="cake-piping-stars">
+          <svg class="piping-strawberry" viewBox="0 0 16 16" width="14" height="14"><path d="M8 15C5 12 3 9 3 6a5 5 0 0 1 10 0c0 3-2 6-5 9z" fill="#e63946"/><path d="M8 2c-1.5-1.5-3 0-3 0s1.5 1 3 1 3-1 3-1-1.5-1.5-3 0z" fill="#2a9d8f"/><circle cx="6" cy="7" r="0.6" fill="#fff" opacity="0.7"/><circle cx="10" cy="7" r="0.6" fill="#fff" opacity="0.7"/><circle cx="8" cy="10" r="0.6" fill="#fff" opacity="0.7"/></svg>
+          <svg class="piping-star" viewBox="0 0 16 16" width="12" height="12"><polygon points="8,1 10,6 15,6 11,9.5 13,15 8,11.5 3,15 5,9.5 1,6 6,6" fill="#e8c476"/></svg>
+          <svg class="piping-strawberry" viewBox="0 0 16 16" width="14" height="14"><path d="M8 15C5 12 3 9 3 6a5 5 0 0 1 10 0c0 3-2 6-5 9z" fill="#e63946"/><path d="M8 2c-1.5-1.5-3 0-3 0s1.5 1 3 1 3-1 3-1-1.5-1.5-3 0z" fill="#2a9d8f"/><circle cx="6" cy="7" r="0.6" fill="#fff" opacity="0.7"/><circle cx="10" cy="7" r="0.6" fill="#fff" opacity="0.7"/><circle cx="8" cy="10" r="0.6" fill="#fff" opacity="0.7"/></svg>
+          <svg class="piping-star" viewBox="0 0 16 16" width="12" height="12"><polygon points="8,1 10,6 15,6 11,9.5 13,15 8,11.5 3,15 5,9.5 1,6 6,6" fill="#e8c476"/></svg>
+          <svg class="piping-strawberry" viewBox="0 0 16 16" width="14" height="14"><path d="M8 15C5 12 3 9 3 6a5 5 0 0 1 10 0c0 3-2 6-5 9z" fill="#e63946"/><path d="M8 2c-1.5-1.5-3 0-3 0s1.5 1 3 1 3-1 3-1-1.5-1.5-3 0z" fill="#2a9d8f"/><circle cx="6" cy="7" r="0.6" fill="#fff" opacity="0.7"/><circle cx="10" cy="7" r="0.6" fill="#fff" opacity="0.7"/><circle cx="8" cy="10" r="0.6" fill="#fff" opacity="0.7"/></svg>
+        </div>
+        <div class="frosting-driplets"></div>
+      </div>
+      <div class="cake-tier-bottom">
+        <div class="cake-sugar-pearls"></div>
+        <div class="cake-text-banner">happy birthday anika</div>
+      </div>
+      <div class="cake-stand"></div>
+      <div class="cake-stand-base"></div>
+    </div>
+
+    <div class="cake-controls-wrap">
+      <button type="button" class="blow-cake-btn" id="micBlowToggle" title="Blow into your microphone">
+        <svg class="mic-svg-icon" viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="9" y="2" width="6" height="12" rx="3" fill="currentColor"/>
+          <path d="M5 10a7 7 0 0 0 14 0M12 19v3M8 22h8"/>
+        </svg>
+        <span id="micLabel">Blow out the candles</span>
+      </button>
+      <div class="mic-level-meter" id="micLevelMeter"><div class="mic-level-bar" id="micLevelBar"></div></div>
+      <p class="blow-hint">allow the mic, make your wish, then blow softly toward your phone</p>
+      <button type="button" class="tap-blow-btn" id="blowCakeBtn"><span id="blowBtnLabel">no mic? just tap to blow</span></button>
+    </div>
+    <div class="wish-toast" id="wishToast">
+      <svg viewBox="0 0 16 16" width="13" height="13"><path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5Z" fill="#e8c476"/></svg>
+      <span>the universe heard that. and so did i.</span>
+      <svg viewBox="0 0 16 16" width="13" height="13"><path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5Z" fill="#e8c476"/></svg>
+    </div>
+  </section>
+</main>
+
+<!-- ══════════ 5. THE FINAL LETTER ══════════ -->
+<div class="final-mail-modal" id="finalMailModal">
+  <div class="final-mail-container">
+    <div class="final-mail-halo"></div>
+    <button type="button" class="modal-close-btn" id="modalCloseBtn" title="Close">
+      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+    <article class="final-letter-card">
+      <div class="gold-ribbon">the truth, finally</div>
+      <div class="hanging-ribbon"></div>
+      <div class="final-letter-header">
+        <span class="final-tag">from me to you · straight from the heart</span>
+        <h2 class="final-salutation">For Anika: what I really feel</h2>
+        <p class="final-subline">read this slowly. i mean every word.</p>
+      </div>
+      <div class="final-letter-body" id="finalLetterBody">
+        <p>The candles are out.</p>
+        <p>I want to say something simple, and I want you to believe it. You matter to me. A lot. More than I ever say out loud.</p>
+        <p>I never thought a online friend can be this real. You listen. You care. You make me feel less alone, even with so many miles between us. I never got to hug you or sit next to you, but I feel you here anyway.</p>
+        <p>You think I'm lying when I appreciate you. I'm not. You're beautiful in the way you smile, in the way you care, in the way you make people feel safe. I wish you could see yourself through my eyes, just once.</p>
+        <p>This year, please be gentle with yourself. You're not too much. You're exactly enough, just as you are. And whatever comes, happy days or heavy ones, I'm here.</p>
+        <p>Happy birthday, Anika. Thank you for being in my life. I'm so glad you exist.</p>
+      </div>
+      <div class="final-letter-closing">
+        Always, from far away,<br>
+        <span class="signoff-signature">Saim</span>
+      </div>
+      <div class="final-actions">
+        <button type="button" class="final-btn btn-hug" id="hugBtn">
+          <svg class="action-btn-svg" viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+          <span>send a hug</span>
+        </button>
+        <button type="button" class="final-btn btn-copy" id="copyBtn">
+          <svg class="action-btn-svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+          </svg>
+          <span>keep this</span>
+        </button>
+        <button type="button" class="final-btn btn-replay" id="replayBtn">
+          <svg class="action-btn-svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+          </svg>
+          <span>relight</span>
+        </button>
+      </div>
+      <div class="action-toast" id="actionToast"></div>
+    </article>
+  </div>
+</div>
+
+<script src="audio.js?v=20261002_1259"></script>
+<script src="particles.js?v=20261002_1259"></script>
+<script src="app.js?v=20261003_0817"></script>
+</body>
+</html>
