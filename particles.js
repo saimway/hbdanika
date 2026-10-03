@@ -21,12 +21,16 @@ class ParticleCanvas {
     this.canvas.height = Math.floor(this.height * this.dpr);
     this.canvas.style.width = this.width + 'px';
     this.canvas.style.height = this.height + 'px';
-    this.ctx.setTransform(1, 0, 0, 1, 0, 0);
-    this.ctx.scale(this.dpr, this.dpr);
+    if (this.ctx) {
+      this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+      this.ctx.scale(this.dpr, this.dpr);
+    }
+    this.initStars();
+    this.initAmbient();
   }
   initStars() {
     this.stars = [];
-    const n = Math.min(90, Math.floor(this.width / 9));
+    const n = Math.min(160, Math.max(45, Math.floor(this.width / 10)));
     for (let i = 0; i < n; i++) {
       this.stars.push({
         x: Math.random() * this.width, y: Math.random() * this.height,
@@ -38,7 +42,7 @@ class ParticleCanvas {
   }
   initAmbient() {
     this.ambient = [];
-    const count = Math.min(26, Math.floor(this.width / 16));
+    const count = Math.min(38, Math.max(16, Math.floor(this.width / 24)));
     for (let i = 0; i < count; i++) {
       this.ambient.push({
         x: Math.random() * this.width, y: Math.random() * this.height,
